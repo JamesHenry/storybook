@@ -25,8 +25,8 @@ export async function generateTypesFiles(
         return limited(async () => {
           const getDtsProcess = () =>
             spawn(
-              join(__dirname, '../../../../scripts/node_modules/.bin/jiti'),
-              ['./scripts/dts.ts', index.toString()],
+              `yarn`,
+              ['jiti', './scripts/dts.ts', index.toString()],
               {
                 cwd,
                 stdio: ['ignore', 'pipe', 'inherit'],

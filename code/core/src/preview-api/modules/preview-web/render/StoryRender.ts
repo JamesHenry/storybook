@@ -234,6 +234,7 @@ export class StoryRender<TRenderer extends Renderer> implements Render<TRenderer
           }
           return mountReturn;
         },
+        reporting: null!,
       };
 
       context.context = context;

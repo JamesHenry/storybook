@@ -158,6 +158,7 @@ export function composeStory<TRenderer extends Renderer = Renderer, TArgs extend
       ...story,
       context: null!,
       mount: null!,
+      reporting: null!,
     });
 
     context.context = context;

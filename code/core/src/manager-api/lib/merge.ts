@@ -7,7 +7,8 @@ export default <TObj = any>(a: TObj, ...b: Partial<TObj>[]): TObj => {
   let target = {};
 
   // merge object a unto target
-  target = mergeWith({}, a, (objValue: TObj, srcValue: Partial<TObj>) => {
+  // TODO: remove as any
+  target = mergeWith({}, a as any, (objValue: TObj, srcValue: Partial<TObj>) => {
     if (Array.isArray(srcValue) && Array.isArray(objValue)) {
       srcValue.forEach((s) => {
         const existing = objValue.find((o) => o === s || isEqual(o, s));
@@ -52,7 +53,8 @@ export const noArrayMerge = <TObj = any>(a: TObj, ...b: Partial<TObj>[]): TObj =
   let target = {};
 
   // merge object a unto target
-  target = mergeWith({}, a, (objValue: TObj, srcValue: Partial<TObj>) => {
+  // TODO: remove as any
+  target = mergeWith({}, a as any, (objValue: TObj, srcValue: Partial<TObj>) => {
     // Treat arrays as scalars:
     if (Array.isArray(srcValue)) {
       return srcValue;

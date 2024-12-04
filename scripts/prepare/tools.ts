@@ -22,6 +22,7 @@ import * as tsup from 'tsup';
 import type * as typefest from 'type-fest';
 import typescript from 'typescript';
 import ts from 'typescript';
+import { workspaceRoot} from '@nx/devkit'
 
 import { CODE_DIRECTORY } from '../utils/constants';
 
@@ -122,18 +123,18 @@ type PackageJson = typefest.PackageJson &
   Required<Pick<typefest.PackageJson, 'name' | 'version'>> & { path: string };
 
 export const getWorkspace = async (): Promise<PackageJson[]> => {
-  const codePackage = await readJson(join(CODE_DIRECTORY, 'package.json'));
+  const codePackage = await readJson(join(workspaceRoot, 'package.json'));
   const {
     workspaces: { packages: patterns },
   } = codePackage;
 
   const workspaces = await Promise.all(
-    (patterns as string[]).map(async (pattern: string) => glob(pattern, { cwd: CODE_DIRECTORY }))
+    (patterns as string[]).map(async (pattern: string) => glob(pattern, { cwd: workspaceRoot }))
   );
 
   return Promise.all(
     workspaces
-      .flatMap((p) => p.map((i) => join(CODE_DIRECTORY, i)))
+      .flatMap((p) => p.map((i) => join(workspaceRoot, i)))
       .map(async (packagePath) => {
         const packageJsonPath = join(packagePath, 'package.json');
         if (!(await pathExists(packageJsonPath))) {

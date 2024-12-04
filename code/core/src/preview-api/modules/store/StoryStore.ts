@@ -423,6 +423,7 @@ export class StoryStore<TRenderer extends Renderer> {
           mount: null!,
           canvas: {} as Canvas,
           viewMode: 'story',
+          reporting: null!,
         } as StoryContext<TRenderer>;
 
         return story.unboundStoryFn({ ...context, ...update });

@@ -29,7 +29,6 @@ import { generateSourceFiles } from './helpers/sourcefiles';
 async function run() {
   const flags = process.argv.slice(2);
   const cwd = process.cwd();
-
   const isOptimized = flags.includes('--optimized');
   const isWatch = flags.includes('--watch');
   const isReset = flags.includes('--reset');

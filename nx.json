@@ -7,12 +7,14 @@
   "plugins": [
     {
       "plugin": "@nx/vite/plugin",
+      "exclude": ["test-storybooks/**"],
       "options": {
         "testTargetName": "test"
       }
     },
     {
       "plugin": "@nx/eslint/plugin",
+      "exclude": ["test-storybooks/**"],
       "options": {
         "targetName": "lint"
       }
@@ -42,10 +44,10 @@
       "inputs": [
         "production",
         "^production",
-        "{workspaceRoot}/../scripts/prepare/{bundle,addon-bundle,esm-bundle}.ts"
+        "{workspaceRoot}/scripts/prepare/{bundle,addon-bundle,esm-bundle}.ts"
       ],
       "dependsOn": ["^build"],
-      "outputs": ["{projectRoot}/dist", "{workspaceRoot}/bench/esbuild-metafiles/{projectName}"],
+      "outputs": ["{projectRoot}/dist", "{workspaceRoot}/code/bench/esbuild-metafiles/{projectName}"],
       "cache": true
     },
     "test": {
@@ -66,7 +68,7 @@
       "configurations": {
         "production": {}
       },
-      "inputs": ["default", "^production", "{workspaceRoot}/../scripts/prepare/check.ts"],
+      "inputs": ["default", "^production", "{workspaceRoot}/scripts/prepare/check.ts"],
       "dependsOn": ["build"],
       "cache": true
     },
@@ -88,7 +90,7 @@
           "runtime": "storybook --version"
         }
       ],
-      "outputs": ["{workspaceRoot}/../{projectRoot}"],
+      "outputs": ["{workspaceRoot}/sandbox/{projectName}"],
       "options": {
         "cwd": "{workspaceRoot}",
         "command": "yarn task sandbox -s sandbox --template={projectName}"
@@ -99,7 +101,7 @@
     "sb:dev": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "{workspaceRoot}/../{projectRoot}",
+        "cwd": "{workspaceRoot}/sandbox/{projectName}",
         "command": "yarn storybook",
         "args": "--ci"
       },
@@ -108,11 +110,11 @@
     "sb:build": {
       "executor": "nx:run-commands",
       "options": {
-        "cwd": "{workspaceRoot}/../{projectRoot}",
+        "cwd": "{workspaceRoot}/sandbox/{projectName}",
         "command": "yarn build-storybook"
       },
       "inputs": ["^production"],
-      "outputs": ["{workspaceRoot}/../{projectRoot}/storybook-static"],
+      "outputs": ["{workspaceRoot}/sandbox/{projectName}/storybook-static"],
       "cache": true,
       "dependsOn": ["sandbox"]
     },
@@ -120,7 +122,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{workspaceRoot}",
-        "command": "yarn http-server ../{projectRoot}/storybook-static",
+        "command": "yarn http-server sandbox/{projectName}/storybook-static",
         "args": "--port 8001"
       },
       "dependsOn": ["sb:build"]
